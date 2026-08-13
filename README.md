@@ -32,6 +32,7 @@ Users can upload their photo, enter their name, role, and personal vibe, and gen
 
 ##  Project Structure
 
+```text
 HH-Goa-2026/
 │
 ├── api/
@@ -55,7 +56,7 @@ HH-Goa-2026/
 ├── requirements.txt
 ├── vercel.json
 └── README.md
-
+```
 ##  How it works
 
 ### 01 — Upload
