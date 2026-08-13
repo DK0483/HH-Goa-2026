@@ -28,9 +28,6 @@ TEMPLATE_PATH = os.path.join(
     "hh-goa-template.png"
 )
 
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(GENERATED_FOLDER, exist_ok=True)
-
 
 # =========================================================
 # FONT
