@@ -56,7 +56,8 @@ HH-Goa-2026/
 ├── requirements.txt
 ├── vercel.json
 └── README.md
-##  How It Works
+
+##  How it works
 
 ### 01 — Upload
 
