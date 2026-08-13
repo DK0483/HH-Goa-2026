@@ -133,19 +133,9 @@ def generate():
     )
 
     try:
-
-        uploaded_image = Image.open(
-            photo.stream
-        ).convert("RGB")
-
-        uploaded_image.save(
-            upload_path,
-            "PNG"
-        )
-
-    except Exception:
-
-        return "Invalid image file.", 400
+        uploaded_image = Image.open(photo.stream).convert("RGB")
+    except Exception as e:
+        return f"Invalid image file: {e}", 400
 
 
     # =====================================================
