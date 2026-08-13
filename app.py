@@ -30,11 +30,10 @@ TEMPLATE_PATH = os.path.join(
 # =========================================================
 
 def get_font(size, bold=False):
-    filename = "Inter-Bold.ttf" if bold else "Inter-Regular.ttf"
+    filename = "ARIALBD.TTF" if bold else "ARIAL.TTF"
     font_path = os.path.join(BASE_DIR, "static", "fonts", filename)
 
     if not os.path.exists(font_path):
-        # Debug: show what's actually on disk
         fonts_dir = os.path.join(BASE_DIR, "static", "fonts")
         listing = os.listdir(fonts_dir) if os.path.exists(fonts_dir) else "fonts dir missing"
         raise FileNotFoundError(f"Font not found at {font_path}. Fonts dir contents: {listing}")
