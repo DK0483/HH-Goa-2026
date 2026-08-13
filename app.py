@@ -13,11 +13,7 @@ app = Flask(__name__)
 # FOLDERS
 # =========================================================
 
-BASE_DIR = os.path.dirname(
-    os.path.dirname(
-        os.path.abspath(__file__)
-    )
-)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
 GENERATED_FOLDER = os.path.join(BASE_DIR, "generated")
