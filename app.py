@@ -121,13 +121,6 @@ def generate():
     # SAVE UPLOADED PHOTO
     # =====================================================
 
-    photo_id = str(uuid.uuid4())
-
-    upload_path = os.path.join(
-        UPLOAD_FOLDER,
-        photo_id + ".png"
-    )
-
     try:
         uploaded_image = Image.open(photo.stream).convert("RGB")
     except Exception as e:
