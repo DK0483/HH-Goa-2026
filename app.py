@@ -15,9 +15,6 @@ app = Flask(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
-GENERATED_FOLDER = os.path.join(BASE_DIR, "generated")
-
 TEMPLATE_PATH = os.path.join(
     BASE_DIR,
     "static",
@@ -377,24 +374,6 @@ def generate():
     # SAVE FINAL CARD
     # =====================================================
 
-    filename = (
-        "builder_"
-        + str(uuid.uuid4())
-        + ".png"
-    )
-
-    output_path = os.path.join(
-        GENERATED_FOLDER,
-        filename
-    )
-
-    card.convert("RGB").save(
-        output_path,
-        "PNG"
-    )
-
-    import io, base64
-
     # ... after card = card.convert("RGB")
     buf = io.BytesIO()
     card.save(buf, "PNG")
@@ -410,33 +389,8 @@ def generate():
         vibe=vibe
     )
 
-    # =====================================================
-    # RESULT PAGE
-    # =====================================================
-
-    return render_template(
-        "index.html",
-        page="result",
-        image=filename,
-        name=name,
-        role=role,
-        vibe=vibe
-    )
-
-
 # =========================================================
 # GENERATED IMAGE
 # =========================================================
 
-@app.route("/generated/<filename>")
-def generated(filename):
 
-    return send_from_directory(
-        GENERATED_FOLDER,
-        filename
-    )
-
-
-# =========================================================
-# RUN
-# =========================================================
