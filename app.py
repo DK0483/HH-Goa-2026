@@ -155,6 +155,41 @@ def generate():
         Image.Resampling.LANCZOS
     )
 
+# =====================================================
+# QR CODE
+# =====================================================
+    
+    QR_PATH = os.path.join(
+        BASE_DIR,
+        "static",
+        "qr.png"
+    )
+    
+    if os.path.exists(QR_PATH):
+    
+        qr = Image.open(QR_PATH).convert("RGBA")
+    
+        # Size of QR inside square
+        qr_size = 180
+    
+        qr = ImageOps.contain(
+            qr,
+            (qr_size, qr_size),
+            method=Image.Resampling.LANCZOS
+        )
+    
+        # Position of QR square
+        # Adjust these if needed
+        QR_X = 80
+        QR_Y = 1120
+    
+        card.alpha_composite(
+            qr,
+            (
+                QR_X,
+                QR_Y
+            )
+        )
 
     # =====================================================
     # PHOTO POSITION
