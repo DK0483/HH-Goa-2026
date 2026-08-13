@@ -368,7 +368,7 @@
 
         <div class="generated-preview">
 
-            <img src="data:image/png;base64,{{ image_data }}" alt="Your Builder ID">
+            <img id="builderCard" src="data:image/png;base64,{{ image_data }}" alt="Your Builder ID">
 
         </div>
 
@@ -379,7 +379,7 @@
 
         <a
             class="action primary"
-            href="{{ url_for('generated', filename=image) }}"
+            href="data:image/png;base64,{{ image_data }}"
             download="HH-Goa-Builder-ID.png"
         >
 
