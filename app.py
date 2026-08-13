@@ -170,9 +170,7 @@ def generate():
     # LOAD USER PHOTO
     # =====================================================
 
-    user_photo = Image.open(
-        upload_path
-    ).convert("RGB")
+    user_photo = uploaded_image 
 
 
     # =====================================================
