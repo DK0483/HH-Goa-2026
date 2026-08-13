@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>HH Goa 2026 — Builder ID</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<!-- ========================= -->
+<!-- NAV -->
+<!-- ========================= -->
+
+<nav>
+
+    <div class="nav-left">
+        HH GOA
+    </div>
+
+    <div class="nav-center">
+        BUILDER ID · 2026
+    </div>
+
+    <div class="nav-right">
+        GOA, INDIA
+    </div>
+
+</nav>
+
+
+{% if page == "home" %}
+
+<!-- ========================= -->
+<!-- STEP 01 -->
+<!-- ========================= -->
+
+<main class="generator">
+
+    <div class="step-title">
+        <span>STEP 01</span>
+        BUILD YOUR IDENTITY
+    </div>
+
+
+    <section class="hero">
+
+        <h1>
+            CLAIM YOUR
+            <br>
+            BUILDER ID<span>.</span>
+        </h1>
+
+        <p>
+            Upload your photo, tell us what makes
+            you a builder, and create your HH Goa identity.
+        </p>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- FORM -->
+    <!-- ========================= -->
+
+    <form
+        action="/generate"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        <!-- ========================= -->
+        <!-- PHOTO -->
+        <!-- ========================= -->
+
+        <div class="field">
+
+            <div class="field-heading">
+
+                <b>YOUR PHOTO</b>
+
+                <span>
+                    JPG · PNG · WEBP · HEIC
+                </span>
+
+            </div>
+
+
+            <!-- IMPORTANT:
+                 This is now DIV instead of LABEL.
+                 Clicking anywhere opens file picker.
+            -->
+
+            <div
+                class="upload-box"
+                id="uploadBox"
+                onclick="openFilePicker()"
+            >
+
+                <!-- Hidden file input -->
+
+                <input
+                    type="file"
+                    id="photoInput"
+                    name="photo"
+                    accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.heic,.heif"
+                    required
+                    onchange="previewPhoto(event)"
+                >
+
+
+                <!-- DEFAULT UPLOAD CONTENT -->
+
+                <div
+                    class="upload-content"
+                    id="uploadContent"
+                >
+
+                    <div class="upload-icon">
+                        ↑
+                    </div>
+
+                    <strong>
+                        UPLOAD PHOTO
+                    </strong>
+
+                    <span>
+                        Click to select your photo
+                    </span>
+
+                    <small>
+                        Portrait, landscape or anything in between.
+                    </small>
+
+                </div>
+
+
+                <!-- IMAGE PREVIEW -->
+
+                <img
+                    id="photoPreview"
+                    class="photo-preview"
+                    alt="Selected photo"
+                >
+
+
+                <!-- CHANGE PHOTO BUTTON -->
+
+                <button
+                    type="button"
+                    id="changePhoto"
+                    class="change-photo"
+                    onclick="changePhoto(event)"
+                >
+                    CHANGE PHOTO
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- BUILDER DETAILS -->
+        <!-- ========================= -->
+
+        <div class="details">
+
+            <div class="details-header">
+
+                <div>
+
+                    <b>
+                        BUILDER DETAILS
+                    </b>
+
+                    <small>
+                        Make this card yours.
+                    </small>
+
+                </div>
+
+                <strong>
+                    02 / 03
+                </strong>
+
+            </div>
+
+
+            <!-- NAME -->
+
+            <label>
+
+                YOUR NAME
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="YOUR NAME"
+                    autocomplete="name"
+                    required
+                >
+
+            </label>
+
+
+            <!-- ROLE -->
+
+            <label>
+
+                ROLE / WHAT YOU DO
+
+                <input
+                    type="text"
+                    name="role"
+                    placeholder="FULL STACK DEVELOPER"
+                    required
+                >
+
+            </label>
+
+
+            <!-- VIBE -->
+
+            <label>
+
+                YOUR VIBE
+
+                <input
+                    type="text"
+                    name="vibe"
+                    placeholder="SHIP IT · BUILD DIFFERENT · CODE HARD"
+                >
+
+            </label>
+
+
+            <div class="examples">
+
+                Examples:
+                @yourhandle ·
+                BUILT DIFFERENT ·
+                SHIP IT ·
+                CODE HARD
+
+            </div>
+
+
+            <!-- EVENT INFO -->
+
+            <div class="event-info">
+
+                <div>
+
+                    <b>
+                        HH GOA 2026
+                    </b>
+
+                    <span>
+                        28—31 OCT · GOA, INDIA
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <b>
+                        ORGANISED BY
+                    </b>
+
+                    <span>
+                        2:47 PM STUDIO
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- GENERATE -->
+
+            <button
+                type="submit"
+                class="generate-btn"
+            >
+
+                GENERATE BUILDER ID
+
+                <span>
+                    →
+                </span>
+
+            </button>
+
+        </div>
+
+    </form>
+
+</main>
+
+
+{% else %}
+
+<!-- ========================= -->
+<!-- STEP 02 -->
+<!-- ========================= -->
+
+<main class="result-page">
+
+    <div class="result-card">
+
+
+        <!-- HEADER -->
+
+        <div class="result-header">
+
+            <div>
+
+                <span>
+                    FINAL CHECK
+                </span>
+
+                <h1>
+                    READY
+                    <br>
+                    TO
+                    <em>SHIP?</em>
+                </h1>
+
+            </div>
+
+
+            <div class="step-pill">
+                STEP 02
+            </div>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <p class="result-description">
+
+            Your HH Goa Builder ID is ready.
+            Download it, share it to X, or make another one.
+
+        </p>
+
+
+        <!-- ========================= -->
+        <!-- GENERATED CARD -->
+        <!-- ========================= -->
+
+        <div class="generated-preview">
+
+            <img
+                src="{{ url_for('generated', filename=image) }}"
+                id="builderCard"
+                alt="HH Goa Builder ID"
+            >
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- DOWNLOAD -->
+        <!-- ========================= -->
+
+        <a
+            class="action primary"
+            href="{{ url_for('generated', filename=image) }}"
+            download="HH-Goa-Builder-ID.png"
+        >
+
+            <span>
+                ↓
+            </span>
+
+            DOWNLOAD CARD
+
+        </a>
+
+
+        <!-- ========================= -->
+        <!-- SHARE TO X -->
+        <!-- ========================= -->
+
+        <button
+            type="button"
+            class="action secondary"
+            onclick="shareCard()"
+        >
+
+            <span>
+                ⤴
+            </span>
+
+            SHARE TO X
+
+        </button>
+
+
+        <!-- ========================= -->
+        <!-- NEW CARD -->
+        <!-- ========================= -->
+
+        <a
+            class="action new-card"
+            href="/"
+        >
+
+            <span>
+                +
+            </span>
+
+            GENERATE NEW CARD
+
+        </a>
+
+
+        <!-- ========================= -->
+        <!-- X CAPTION -->
+        <!-- ========================= -->
+
+        <div class="caption-section">
+
+            <div class="caption-heading">
+
+                <b>
+                    X CAPTION
+                </b>
+
+                <span>
+                    PRE-FILLED
+                </span>
+
+            </div>
+
+
+            <div class="caption">
+
+                <p>
+                    Sun. Code. Chaos. Repeat. 🌴💻⚡
+                </p>
+
+                <p>
+                    HH Goa 2026 — I'm ready to build. 🚀
+                </p>
+
+                <p>
+                    See you in Goa. Let's ship something wild. 🔥
+                </p>
+
+                <p>
+                    #FrameInGoa #HHGoa #HHGoa2026
+                    #HackerHouse #Builders #BuildInPublic
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- EVENT -->
+        <!-- ========================= -->
+
+        <div class="event-bottom">
+
+            <div>
+
+                <span>
+                    EVENT
+                </span>
+
+                <b>
+                    HH GOA 2026
+                </b>
+
+                <small>
+                    28—31 OCT · GOA
+                </small>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    ORGANISER
+                </span>
+
+                <b>
+                    2:47 PM STUDIO
+                </b>
+
+                <small>
+                    SHIP FROM PARADISE
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- ========================= -->
+<!-- SHARE SCRIPT -->
+<!-- ========================= -->
+
+<script>
+
+async function shareCard() {
+
+    try {
+
+        const image =
+            document.getElementById("builderCard");
+
+
+        const response =
+            await fetch(image.src);
+
+
+        const blob =
+            await response.blob();
+
+
+        const file =
+            new File(
+                [blob],
+                "HH-Goa-Builder-ID.png",
+                {
+                    type: "image/png"
+                }
+            );
+
+
+        const text =
+`Sun. Code. Chaos. Repeat. 🌴💻⚡
+
+HH Goa 2026 — I'm ready to build. 🚀
+
+See you in Goa. Let's ship something wild. 🔥
+
+#FrameInGoa #HHGoa #HHGoa2026`;
+
+
+        /* MOBILE SHARE */
+
+        if (
+            navigator.share &&
+            navigator.canShare &&
+            navigator.canShare({
+                files: [file]
+            })
+        ) {
+
+            await navigator.share({
+
+                title:
+                    "HH Goa 2026 Builder ID",
+
+                text: text,
+
+                files: [file]
+
+            });
+
+            return;
+        }
+
+
+        /* DESKTOP X FALLBACK */
+
+        const url =
+            "https://twitter.com/intent/tweet?text="
+            +
+            encodeURIComponent(text);
+
+
+        window.open(
+            url,
+            "_blank",
+            "noopener,noreferrer"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Share failed:",
+            error
+        );
+
+        const text =
+            "I'm ready to build at HH Goa 2026! 🚀 #FrameInGoa";
+
+
+        window.open(
+            "https://twitter.com/intent/tweet?text="
+            +
+            encodeURIComponent(text),
+            "_blank"
+        );
+
+    }
+
+}
+
+</script>
+
+{% endif %}
+
+
+<!-- ========================= -->
+<!-- FOOTER -->
+<!-- ========================= -->
+
+<footer>
+
+    <span>
+        #FRAMEINGOA · HH GOA 2026
+    </span>
+
+</footer>
+
+
+<!-- ========================= -->
+<!-- UPLOAD JAVASCRIPT -->
+<!-- ========================= -->
+
+<script>
+
+/*
+    OPEN FILE PICKER
+*/
+
+function openFilePicker() {
+
+    const input =
+        document.getElementById("photoInput");
+
+    input.click();
+
+}
+
+
+/*
+    PREVIEW SELECTED PHOTO
+*/
+
+function previewPhoto(event) {
+
+    const file =
+        event.target.files[0];
+
+
+    if (!file) {
+        return;
+    }
+
+
+    console.log(
+        "Selected:",
+        file.name,
+        file.type,
+        file.size
+    );
+
+
+    const preview =
+        document.getElementById("photoPreview");
+
+
+    const content =
+        document.getElementById("uploadContent");
+
+
+    const changeButton =
+        document.getElementById("changePhoto");
+
+
+    /*
+        Make preview URL
+    */
+
+    const imageURL =
+        URL.createObjectURL(file);
+
+
+    preview.src =
+        imageURL;
+
+
+    /*
+        Show image
+    */
+
+    preview.style.display =
+        "block";
+
+
+    /*
+        Hide upload text
+    */
+
+    content.style.display =
+        "none";
+
+
+    /*
+        Show change button
+    */
+
+    changeButton.style.display =
+        "block";
+
+
+    /*
+        Change upload box appearance
+    */
+
+    document
+        .getElementById("uploadBox")
+        .classList.add("has-photo");
+
+}
+
+
+/*
+    CHANGE PHOTO
+*/
+
+function changePhoto(event) {
+
+    /*
+        Don't trigger parent upload click
+    */
+
+    event.stopPropagation();
+
+
+    const input =
+        document.getElementById("photoInput");
+
+
+    input.value = "";
+
+
+    document
+        .getElementById("photoPreview")
+        .style.display = "none";
+
+
+    document
+        .getElementById("uploadContent")
+        .style.display = "flex";
+
+
+    document
+        .getElementById("changePhoto")
+        .style.display = "none";
+
+
+    document
+        .getElementById("uploadBox")
+        .classList.remove("has-photo");
+
+
+    input.click();
+
+}
+
+</script>
+
+
+</body>
+
+</html>

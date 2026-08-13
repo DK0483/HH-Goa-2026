@@ -1,0 +1,474 @@
+from flask import Flask, render_template, request, send_from_directory
+from PIL import Image, ImageDraw, ImageFont, ImageOps
+import os
+import uuid
+
+
+app = Flask(__name__)
+
+
+# =========================================================
+# FOLDERS
+# =========================================================
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
+GENERATED_FOLDER = os.path.join(BASE_DIR, "generated")
+
+TEMPLATE_PATH = os.path.join(
+    BASE_DIR,
+    "static",
+    "hh-goa-template.png"
+)
+
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(GENERATED_FOLDER, exist_ok=True)
+
+
+# =========================================================
+# FONT
+# =========================================================
+
+def get_font(size, bold=False):
+
+    if bold:
+
+        fonts = [
+            "C:/Windows/Fonts/arialbd.ttf",
+            "C:/Windows/Fonts/segoeuib.ttf",
+            "C:/Windows/Fonts/calibrib.ttf"
+        ]
+
+    else:
+
+        fonts = [
+            "C:/Windows/Fonts/arial.ttf",
+            "C:/Windows/Fonts/segoeui.ttf",
+            "C:/Windows/Fonts/calibri.ttf"
+        ]
+
+    for font_path in fonts:
+
+        if os.path.exists(font_path):
+
+            return ImageFont.truetype(
+                font_path,
+                size
+            )
+
+    return ImageFont.load_default()
+
+
+# =========================================================
+# CENTER TEXT
+# =========================================================
+
+def center_text(draw, text, y, font, fill):
+
+    bbox = draw.textbbox(
+        (0, 0),
+        text,
+        font=font
+    )
+
+    text_width = bbox[2] - bbox[0]
+
+    x = (1024 - text_width) // 2
+
+    draw.text(
+        (x, y),
+        text,
+        font=font,
+        fill=fill
+    )
+
+
+# =========================================================
+# HOME
+# =========================================================
+
+@app.route("/")
+def home():
+
+    return render_template(
+        "index.html",
+        page="home"
+    )
+
+
+# =========================================================
+# GENERATE
+# =========================================================
+
+@app.route("/generate", methods=["POST"])
+def generate():
+
+    # =====================================================
+    # FORM DATA
+    # =====================================================
+
+    name = request.form.get(
+        "name",
+        "BUILDER"
+    ).strip()
+
+    role = request.form.get(
+        "role",
+        "FULL STACK"
+    ).strip()
+
+    vibe = request.form.get(
+        "vibe",
+        "BUILT DIFFERENT"
+    ).strip()
+
+
+    if not name:
+        name = "BUILDER"
+
+    if not role:
+        role = "FULL STACK"
+
+    if not vibe:
+        vibe = "BUILT DIFFERENT"
+
+
+    # =====================================================
+    # PHOTO
+    # =====================================================
+
+    photo = request.files.get("photo")
+
+    if not photo or photo.filename == "":
+        return "Please upload a photo.", 400
+
+
+    # =====================================================
+    # SAVE UPLOADED PHOTO
+    # =====================================================
+
+    photo_id = str(uuid.uuid4())
+
+    upload_path = os.path.join(
+        UPLOAD_FOLDER,
+        photo_id + ".png"
+    )
+
+    try:
+
+        uploaded_image = Image.open(
+            photo.stream
+        ).convert("RGB")
+
+        uploaded_image.save(
+            upload_path,
+            "PNG"
+        )
+
+    except Exception:
+
+        return "Invalid image file.", 400
+
+
+    # =====================================================
+    # CHECK TEMPLATE
+    # =====================================================
+
+    if not os.path.exists(TEMPLATE_PATH):
+
+        return (
+            "Template not found. "
+            "Put hh-goa-template.png inside static folder."
+        ), 500
+
+
+    # =====================================================
+    # LOAD TEMPLATE
+    # =====================================================
+
+    card = Image.open(
+        TEMPLATE_PATH
+    ).convert("RGBA")
+
+    card = card.resize(
+        (1024, 1536),
+        Image.Resampling.LANCZOS
+    )
+
+
+    # =====================================================
+    # PHOTO POSITION
+    # =====================================================
+    #
+    # Large circle below HACKER GOA HOUSE
+    #
+    # =====================================================
+
+    PHOTO_CENTER_X = 512
+    PHOTO_CENTER_Y = 690
+    PHOTO_RADIUS = 275
+
+
+    # =====================================================
+    # LOAD USER PHOTO
+    # =====================================================
+
+    user_photo = Image.open(
+        upload_path
+    ).convert("RGB")
+
+
+    # =====================================================
+    # CROP PHOTO
+    # =====================================================
+
+    photo_diameter = PHOTO_RADIUS * 2
+
+    user_photo = ImageOps.fit(
+        user_photo,
+        (
+            photo_diameter,
+            photo_diameter
+        ),
+        method=Image.Resampling.LANCZOS,
+        centering=(0.5, 0.5)
+    )
+
+
+    # =====================================================
+    # CIRCLE MASK
+    # =====================================================
+
+    mask = Image.new(
+        "L",
+        (
+            photo_diameter,
+            photo_diameter
+        ),
+        0
+    )
+
+    mask_draw = ImageDraw.Draw(mask)
+
+    mask_draw.ellipse(
+        (
+            0,
+            0,
+            photo_diameter,
+            photo_diameter
+        ),
+        fill=255
+    )
+
+
+    # =====================================================
+    # PHOTO LAYER
+    # =====================================================
+
+    photo_layer = Image.new(
+        "RGBA",
+        card.size,
+        (0, 0, 0, 0)
+    )
+
+    photo_layer.paste(
+        user_photo,
+        (
+            PHOTO_CENTER_X - PHOTO_RADIUS,
+            PHOTO_CENTER_Y - PHOTO_RADIUS
+        ),
+        mask
+    )
+
+
+    # =====================================================
+    # PINK PHOTO BORDER
+    # =====================================================
+
+    photo_draw = ImageDraw.Draw(
+        photo_layer
+    )
+
+    BORDER = 7
+
+    photo_draw.ellipse(
+        (
+            PHOTO_CENTER_X - PHOTO_RADIUS,
+            PHOTO_CENTER_Y - PHOTO_RADIUS,
+
+            PHOTO_CENTER_X + PHOTO_RADIUS,
+            PHOTO_CENTER_Y + PHOTO_RADIUS
+        ),
+        outline="#c91f55",
+        width=BORDER
+    )
+
+
+    # =====================================================
+    # ADD PHOTO TO CARD
+    # =====================================================
+
+    card = Image.alpha_composite(
+        card,
+        photo_layer
+    )
+
+
+    # =====================================================
+    # DRAW TEXT
+    # =====================================================
+
+    draw = ImageDraw.Draw(card)
+
+
+    # =====================================================
+    # VIBE
+    # =====================================================
+
+    vibe_font = get_font(
+        30,
+        bold=True
+    )
+
+    vibe_text = vibe.upper()
+
+    center_text(
+        draw,
+        vibe_text,
+        997,
+        vibe_font,
+        "#f5b400"
+    )
+
+
+    # =====================================================
+    # NAME
+    # =====================================================
+
+    name_font = get_font(
+        58,
+        bold=True
+    )
+
+    name_text = name.upper()
+
+    center_text(
+        draw,
+        name_text,
+        1040,
+        name_font,
+        "#f5ebd8"
+    )
+
+
+    # =====================================================
+    # ROLE LABEL
+    # =====================================================
+
+    role_label_font = get_font(
+        18,
+        bold=True
+    )
+
+    draw.text(
+        (
+            520,
+            1150
+        ),
+        "STACK / ROLE",
+        font=role_label_font,
+        fill="#008f73"
+    )
+
+
+    # =====================================================
+    # ROLE
+    # =====================================================
+
+    role_font = get_font(
+        18,
+        bold=True
+    )
+
+    draw.text(
+        (
+            520,
+            1175
+        ),
+        role,
+        font=role_font,
+        fill="#f5ebd8"
+    )
+
+
+    # =====================================================
+    # QR
+    # =====================================================
+    #
+    # QR intentionally disabled.
+    #
+    # We will add QR after Vercel deployment.
+    #
+    # =====================================================
+
+
+    # =====================================================
+    # SAVE FINAL CARD
+    # =====================================================
+
+    filename = (
+        "builder_"
+        + str(uuid.uuid4())
+        + ".png"
+    )
+
+    output_path = os.path.join(
+        GENERATED_FOLDER,
+        filename
+    )
+
+    card.convert("RGB").save(
+        output_path,
+        "PNG"
+    )
+
+
+    # =====================================================
+    # RESULT PAGE
+    # =====================================================
+
+    return render_template(
+        "index.html",
+        page="result",
+        image=filename,
+        name=name,
+        role=role,
+        vibe=vibe
+    )
+
+
+# =========================================================
+# GENERATED IMAGE
+# =========================================================
+
+@app.route("/generated/<filename>")
+def generated(filename):
+
+    return send_from_directory(
+        GENERATED_FOLDER,
+        filename
+    )
+
+
+# =========================================================
+# RUN
+# =========================================================
+
+if __name__ == "__main__":
+
+    app.run(
+        debug=True,
+        host="127.0.0.1",
+        port=5000
+    )

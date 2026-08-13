@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.venv/
+
+# User uploaded files
+uploads/
+
+# Generated files
+generated/
+
+# Environment variables
+.env
+
+# VS Code
+.vscode/
