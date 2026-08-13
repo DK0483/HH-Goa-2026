@@ -180,8 +180,8 @@ def generate():
     
         # Position of QR square
         # Adjust these if needed
-        QR_X = 80
-        QR_Y = 1120
+        QR_X = 100
+        QR_Y = 1190
     
         card.alpha_composite(
             qr,
