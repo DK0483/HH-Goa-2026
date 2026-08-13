@@ -170,7 +170,7 @@ def generate():
         qr = Image.open(QR_PATH).convert("RGBA")
     
         # Size of QR inside square
-        qr_size = 180
+        qr_size = 190
     
         qr = ImageOps.contain(
             qr,
