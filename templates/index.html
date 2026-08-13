@@ -368,11 +368,7 @@
 
         <div class="generated-preview">
 
-            <img
-                src="{{ url_for('generated', filename=image) }}"
-                id="builderCard"
-                alt="HH Goa Builder ID"
-            >
+            <img src="data:image/png;base64,{{ image_data }}" alt="Your Builder ID">
 
         </div>
 
