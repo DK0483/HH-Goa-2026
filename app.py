@@ -1,3 +1,5 @@
+import io
+
 from flask import Flask, render_template, request, send_from_directory
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 import os
@@ -35,35 +37,9 @@ os.makedirs(GENERATED_FOLDER, exist_ok=True)
 # =========================================================
 
 def get_font(size, bold=False):
-
-    if bold:
-
-        fonts = [
-            "C:/Windows/Fonts/arialbd.ttf",
-            "C:/Windows/Fonts/segoeuib.ttf",
-            "C:/Windows/Fonts/calibrib.ttf"
-        ]
-
-    else:
-
-        fonts = [
-            "C:/Windows/Fonts/arial.ttf",
-            "C:/Windows/Fonts/segoeui.ttf",
-            "C:/Windows/Fonts/calibri.ttf"
-        ]
-
-    for font_path in fonts:
-
-        if os.path.exists(font_path):
-
-            return ImageFont.truetype(
-                font_path,
-                size
-            )
-
-    return ImageFont.load_default()
-
-
+    filename = "Inter-Bold.ttf" if bold else "Inter-Regular.ttf"
+    font_path = os.path.join(BASE_DIR, "static", "fonts", filename)
+    return ImageFont.truetype(font_path, size)
 # =========================================================
 # CENTER TEXT
 # =========================================================
@@ -437,6 +413,22 @@ def generate():
         "PNG"
     )
 
+    import io, base64
+
+    # ... after card = card.convert("RGB")
+    buf = io.BytesIO()
+    card.save(buf, "PNG")
+    buf.seek(0)
+    img_base64 = base64.b64encode(buf.read()).decode("utf-8")
+
+    return render_template(
+        "index.html",
+        page="result",
+        image_data=img_base64,   # use <img src="data:image/png;base64,{{ image_data }}">
+        name=name,
+        role=role,
+        vibe=vibe
+    )
 
     # =====================================================
     # RESULT PAGE
@@ -468,11 +460,3 @@ def generated(filename):
 # =========================================================
 # RUN
 # =========================================================
-
-if __name__ == "__main__":
-
-    app.run(
-        debug=True,
-        host="127.0.0.1",
-        port=5000
-    )
