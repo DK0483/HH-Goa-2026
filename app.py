@@ -1,5 +1,5 @@
 import io
-
+import base64
 from flask import Flask, render_template, request, send_from_directory
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 import os
