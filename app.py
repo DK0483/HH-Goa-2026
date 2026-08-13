@@ -328,7 +328,7 @@ def generate():
     center_text(
         draw,
         vibe_text,
-        994,
+        989,
         vibe_font,
         "#f5b400"
     )
